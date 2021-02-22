@@ -87,7 +87,7 @@ exports.LoginUser = async (req, res) => {
     if (!validPassword) {
       return res.status(400).send("Incorrect email or password.");
     }
-    const token = jwt.sign({ _id: user._id }, config.get("PrivateKey"));
+    const token = jwt.sign({ _id: user._id }, "PrivateKey");
     res.json({ token, user });
   } catch (e) {
     console.log(e);
@@ -97,9 +97,9 @@ exports.LoginUser = async (req, res) => {
 
 exports.UpdateUser = async (req, res) => {
   try {
-    var updatedUser = req.body?.user;
-    var userData = await User.findByIdAndUpdate(
-      updatedUser._id,
+    let updatedUser = req.body;
+    let userData = await User.findByIdAndUpdate(
+      req.params.user_id,
       {
         $set: updatedUser,
       },
