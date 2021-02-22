@@ -22,7 +22,7 @@ exports.GetAchievement = (req, res, next) => {
 
 exports.CreateAchievement = async (req, res, next) => {
   try {
-    var newAchievement = req.body?.achievement;
+    var newAchievement = req.body;
     var achievementData = await Achievement.create(newAchievement);
     return res.status(200).json(achievementData);
   } catch (e) {
@@ -33,9 +33,9 @@ exports.CreateAchievement = async (req, res, next) => {
 
 exports.UpdateAchievement = async (req, res) => {
   try {
-    var updatedAchievement = req.body?.achievement;
+    var updatedAchievement = req.body;
     var achievementData = await Achievement.findByIdAndUpdate(
-      updatedAchievement._id,
+      req.params.achievement_id,
       {
         $set: updatedAchievement,
       },
