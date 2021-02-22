@@ -22,8 +22,8 @@ router.post("/user/password/reset", userController.ForgetPassword);
 router.post("/user/password/forget", userController.ForgetPasswordEmail);
 
 router.get("/course/:course_id", courseController.GetCourse);
-router.get("/course/all", courseController.GetAllCourse);
-router.get("/course/user", courseController.GetUserCourse);
+router.get("/course_all", courseController.GetAllCourse);
+router.get("/course_user/:user_id", courseController.GetUserCourse);
 router.post("/course", courseController.CreateCourse);
 router.put("/course/:course_id", courseController.UpdateCourse);
 router.delete("/course/:course_id", courseController.DeleteCourse);

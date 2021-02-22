@@ -54,14 +54,14 @@ exports.GetUserCourse = async (req, res, next) => {
         next(err);
       } else {
         var userCourseIds = user.courses;
-        var userCourseIdsList = userCourseIds.split(",");
-        var userCourseIdsData = await Course.find({
+        var userCourseIdsList = userCourseIds?.split(",");
+        var courses = await Course.find({
           _id: { $in: userCourseIdsList },
         });
         var count = await Course.find({
           _id: { $in: userCourseIdsList },
         }).countDocuments({});
-        return { userCourseIdsData, count };
+        return res.status(500).json({ courses, count });
       }
     });
   } catch (e) {
@@ -72,7 +72,7 @@ exports.GetUserCourse = async (req, res, next) => {
 
 exports.CreateCourse = async (req, res, next) => {
   try {
-    var newCourse = req.body?.course;
+    var newCourse = req.body;
     var courseData = await Course.create(newCourse);
     return res.status(200).json(courseData);
   } catch (e) {
@@ -83,9 +83,9 @@ exports.CreateCourse = async (req, res, next) => {
 
 exports.UpdateCourse = async (req, res) => {
   try {
-    var updatedCourse = req.body?.course;
-    var courseData = await Quiz.findByIdAndUpdate(
-      updatedCourse._id,
+    var updatedCourse = req.body;
+    var courseData = await Course.findByIdAndUpdate(
+      req.params.course_id,
       {
         $set: updatedCourse,
       },
