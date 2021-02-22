@@ -45,7 +45,7 @@ router.post("/question", questionController.CreateQuestion);
 router.put("/question/:question_id", questionController.UpdateQuestion);
 router.delete("/question/:question_id", questionController.DeleteQuestion);
 
-router.post("question/attempt", attemptController.CreateAttempt);
+router.post("/question/attempt", attemptController.CreateAttempt);
 
 router.get(
   "/achievement/:achievement_id",

@@ -2,7 +2,7 @@ const { Attempt } = require("../models/attempt");
 
 exports.CreateAttempt = async (req, res, next) => {
   try {
-    var newAttempt = req.body?.attempt;
+    var newAttempt = req.body;
     var attemptData = await Attempt.create(newAttempt);
     return res.status(200).json(attemptData);
   } catch (e) {
