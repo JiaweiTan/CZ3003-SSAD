@@ -1,4 +1,5 @@
 const { Quiz } = require("../models/quiz");
+const { Topic } = require("../models/topic");
 
 exports.GetAllQuiz = async (req, res) => {
   try {
@@ -31,8 +32,15 @@ exports.GetAllQuiz = async (req, res) => {
 
 exports.CreateQuiz = async (req, res, next) => {
   try {
-    var newQuiz = req.body?.quiz;
+    var newQuiz = req.body;
     var quizData = await Quiz.create(newQuiz);
+    await Topic.updateOne(
+      { _id: { $eq: newQuiz.topic_id } },
+      {
+        $push: { quiz_list: quizData._id.toString() }
+      },
+      { new: true }
+    );
     return res.status(200).json(quizData);
   } catch (e) {
     console.log(e);
@@ -61,6 +69,11 @@ exports.DeleteQuiz = async (req, res) => {
   try {
     var quizId = req.params?.quiz_id;
     var success = await Quiz.deleteOne({ _id: quizId });
+    await Topic.updateOne(
+      { quiz_list: { $in: quizId } },
+      { $pull: { quiz_list: quizId } },
+      { multi: true }
+    );
     return success ? res.status(200).end() : res.status(400).end();
   } catch (e) {
     console.log(e);

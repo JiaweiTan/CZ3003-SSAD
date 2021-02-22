@@ -12,7 +12,7 @@ const Quiz = mongoose.model(
       required: true,
     },
     question_list: {
-      type: String,
+      type: Array,
     },
     created_by: {
       type: String,

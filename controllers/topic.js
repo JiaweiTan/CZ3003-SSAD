@@ -25,7 +25,7 @@ exports.CreateTopic = async (req, res, next) => {
     await Course.updateOne(
       { _id: { $eq: newTopic.course_id } },
       {
-        $push: { topic_list: topicData._id }
+        $push: { topic_list: topicData._id.toString() }
       },
       { new: true }
     );
@@ -58,7 +58,7 @@ exports.DeleteTopic = async (req, res) => {
     var topicId = req.params?.topic_id;
     var success = await Topic.deleteOne({ _id: topicId });
     await Course.updateOne(
-      {},
+      { topic_list: { $in: topicId } },
       { $pull: { topic_list: topicId } },
       { multi: true }
     );

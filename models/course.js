@@ -12,7 +12,7 @@ const Course = mongoose.model(
       required: true,
     },
     topic_list: {
-      type: String,
+      type: Array,
     },
   })
 );
