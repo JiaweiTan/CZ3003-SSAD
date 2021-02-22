@@ -1,4 +1,5 @@
 const { Question } = require("../models/question");
+const { Quiz } = require("../models/quiz");
 
 exports.GetAllQuestion = async (req, res) => {
   try {
@@ -15,13 +16,13 @@ exports.GetAllQuestion = async (req, res) => {
       sortBy: sortBy,
       sortDesc: sortDesc,
     };
-    var question = await Question.find()
+    var questions = await Question.find()
       .skip((paginationInfo.page - 1) * paginationInfo.itemsPerPage)
       .limit(paginationInfo.itemsPerPage)
       .sort(paginationInfo.sortBy)
       .exec();
     var count = await Question.find().countDocuments({});
-    var questionData = { question, count };
+    var questionData = { questions, count };
     return res.status(200).json(questionData);
   } catch (e) {
     console.log(e);
@@ -47,8 +48,15 @@ exports.GetQuestion = (req, res, next) => {
 
 exports.CreateQuestion = async (req, res, next) => {
   try {
-    var newQuestion = req.body?.question;
+    var newQuestion = req.body;
     var questionData = await Question.create(newQuestion);
+    await Quiz.updateOne(
+      { _id: { $eq: newQuestion.quiz_id } },
+      {
+        $push: { question_list: questionData._id.toString() }
+      },
+      { new: true }
+    );
     return res.status(200).json(questionData);
   } catch (e) {
     console.log(e);
@@ -58,9 +66,9 @@ exports.CreateQuestion = async (req, res, next) => {
 
 exports.UpdateQuestion = async (req, res) => {
   try {
-    var updatedQuestion = req.body?.question;
+    var updatedQuestion = req.body;
     var questionData = await Question.findByIdAndUpdate(
-      updatedQuestion._id,
+      req.params.question_id,
       {
         $set: updatedQuestion,
       },
@@ -77,6 +85,11 @@ exports.DeleteQuestion = async (req, res) => {
   try {
     var questionId = req.params?.question_id;
     var success = await Question.deleteOne({ _id: questionId });
+    await Quiz.updateOne(
+      { question_list: { $in: questionId } },
+      { $pull: { question_list: questionId } },
+      { multi: true }
+    );
     return success ? res.status(200).end() : res.status(400).end();
   } catch (e) {
     console.log(e);
