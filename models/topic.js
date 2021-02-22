@@ -12,7 +12,7 @@ const Topic = mongoose.model(
       required: true,
     },
     quiz_list: {
-      type: String,
+      type: Array,
     },
   })
 );

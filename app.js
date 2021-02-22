@@ -8,6 +8,7 @@ var routes = require("./routes/routes");
 // remove deprecated warnings for mongoose
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useUnifiedTopology", true);
+mongoose.set('useFindAndModify', false);
 
 mongoose
   .connect("mongodb://localhost/backend")

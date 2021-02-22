@@ -1,5 +1,6 @@
 const { Quiz } = require("../models/quiz");
 const { Topic } = require("../models/topic");
+const { Course } = require("../models/course");
 
 exports.GetTopic = (req, res, next) => {
   try {
@@ -19,8 +20,15 @@ exports.GetTopic = (req, res, next) => {
 
 exports.CreateTopic = async (req, res, next) => {
   try {
-    var newTopic = req.body?.topic;
+    var newTopic = req.body;
     var topicData = await Topic.create(newTopic);
+    await Course.updateOne(
+      { _id: { $eq: newTopic.course_id } },
+      {
+        $push: { topic_list: topicData._id }
+      },
+      { new: true }
+    );
     return res.status(200).json(topicData);
   } catch (e) {
     console.log(e);
@@ -30,9 +38,9 @@ exports.CreateTopic = async (req, res, next) => {
 
 exports.UpdateTopic = async (req, res) => {
   try {
-    var updatedTopic = req.body?.topic;
+    var updatedTopic = req.body;
     var topicData = await Topic.findByIdAndUpdate(
-      updatedTopic._id,
+      req.params.topic_id,
       {
         $set: updatedTopic,
       },
@@ -49,6 +57,11 @@ exports.DeleteTopic = async (req, res) => {
   try {
     var topicId = req.params?.topic_id;
     var success = await Topic.deleteOne({ _id: topicId });
+    await Course.updateOne(
+      {},
+      { $pull: { topic_list: topicId } },
+      { multi: true }
+    );
     return success ? res.status(200).end() : res.status(400).end();
   } catch (e) {
     console.log(e);
