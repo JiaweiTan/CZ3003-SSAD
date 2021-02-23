@@ -66,15 +66,9 @@ exports.GetUserAchievement = async (req, res, next) => {
         err.status = 400;
         next(err);
       } else {
-        var userAchievementIds = user.achievement;
-        var userAchievementIdsList = userAchievementIds.split(",");
-        var userAchievementIdsData = await Achievement.find({
-          _id: { $in: userAchievementIdsList },
-        });
-        var count = await Achievement.find({
-          _id: { $in: userAchievementIdsList },
-        }).countDocuments({});
-        return { userAchievementIdsData, count };
+        var userAchievements = user.achievement;
+        var count = userAchievements?.length;
+        return res.status(500).json({ userAchievements, count });
       }
     });
   } catch (e) {

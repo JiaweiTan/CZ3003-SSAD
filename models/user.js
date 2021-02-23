@@ -28,13 +28,13 @@ const User = mongoose.model(
       type: String,
     },
     courses: {
-      type: String,
+      type: Array,
     },
     completed_quiz: {
-      type: String,
+      type: Array,
     },
     achievement: {
-      type: String,
+      type: Array,
     },
     score: {
       type: Number,

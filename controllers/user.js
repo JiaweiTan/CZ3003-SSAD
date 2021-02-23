@@ -98,6 +98,10 @@ exports.LoginUser = async (req, res) => {
 exports.UpdateUser = async (req, res) => {
   try {
     let updatedUser = req.body;
+    if (updatedUser.password != null) {
+      const salt = await bcrypt.genSalt(10);
+      updatedUser.password = await bcrypt.hash(updatedUser.password, salt);
+    }
     let userData = await User.findByIdAndUpdate(
       req.params.user_id,
       {
@@ -130,7 +134,7 @@ exports.GetAllUserProgress = async (req, res) => {
         err.status = 400;
         next(err);
       } else {
-        res.json(user.completed_quiz);
+        return res.status(200).json(user.completed_quiz);
       }
     });
   } catch (e) {
@@ -143,28 +147,22 @@ exports.CreateUserProgress = async (req, res) => {
   // Check if userId Exists
   // Append it in and update the completed_quiz
   // completed_quiz List contains a list of quizzes that is comma separated
-  var userId = this.req.params.user_id;
-  var quizId = this.req.params.quiz_id;
+  var userId = req.params.user_id;
+  var quizId = req.body.quiz_id;
   try {
-    return await User.findById(userId, (error, userData) => {
-      var user_progress = userData.completed_quiz;
-      // Check if user_progress is empty. if it is, add it to list
-      if (user_progress == undefined) {
-        userData.completed_quiz = quizId;
-      } else {
-        //Split string into array (quizId)
-        var progressArray = user_progress.split(",");
-        //Ensure that QuestionId will not exist twice in PoolList
-        var result = progressArray.includes(quizId);
-        if (!result) {
-          //Append with comma if array contains data
-          userData.completed_quiz = userData.completed_quiz + "," + quizId;
-        }
-      }
-      userData.save((updatedUserData) => {
-        return updatedUserData.completed_quiz;
-      });
-    });
+    let updateStatus = await User.updateOne(
+      { _id: {$eq: userId} }, 
+      { $addToSet: { completed_quiz: quizId } }
+    );
+    if (updateStatus.nModified) {
+      await User.updateOne(
+        { _id: {$eq: userId} }, 
+        { $inc: { score: 1 } }
+      );
+    }
+    await User.findById(userId, function (err, user) {
+      return res.status(200).json(user.completed_quiz).end();
+    })
   } catch (e) {
     console.log(e);
     return res.status(500).json(e).end();
