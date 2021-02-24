@@ -32,8 +32,6 @@ npm run dev
 
 .env shall contain every credential used using testing/production
 
-VueJS will load them automatically during compilation
-
 Note: When testing, please include in your own credentials.
 
 ```
