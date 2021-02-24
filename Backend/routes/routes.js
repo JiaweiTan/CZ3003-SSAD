@@ -67,4 +67,10 @@ router.get(
 
 router.get("/leaderboard", userController.GetLeaderboard);
 
+//Additional endpoints - For frontend
+router.get("/list/course", courseController.GetCourseList);
+router.get("/list/question", questionController.GetQuestionList);
+router.get("/list/quiz", quizController.GetQuizList);
+router.get("/list/topic", topicController.GetTopicList);
+
 module.exports = router;

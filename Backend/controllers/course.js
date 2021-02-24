@@ -1,6 +1,23 @@
 const { User } = require("../models/user");
 const { Course } = require("../models/course");
 
+exports.GetCourseList = (req, res, next) => {
+  try {
+    Course.find({}, function (err, course) {
+      if (err) {
+        err.status = 400;
+        next(err);
+      } else {
+        res.json(course);
+      }
+    })
+  }
+  catch (e) {
+    console.log(e);
+    return res.status(500).json(e).end();
+  }
+}
+
 exports.GetCourse = (req, res, next) => {
   try {
     Course.findOne({ _id: req.params.course_id }, function (err, course) {

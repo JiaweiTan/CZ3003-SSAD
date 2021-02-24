@@ -2,6 +2,24 @@ const { Quiz } = require("../models/quiz");
 const { Topic } = require("../models/topic");
 const { Course } = require("../models/course");
 
+exports.GetTopicList = (req, res, next) => {
+  try {
+    Topic.find({}, function (err, topic) {
+      if (err) {
+        err.status = 400;
+        next(err);
+      } else {
+        res.json(topic);
+      }
+    })
+  }
+  catch (e) {
+    console.log(e);
+    return res.status(500).json(e).end();
+  }
+}
+
+
 exports.GetTopic = (req, res, next) => {
   try {
     Topic.findOne({ _id: req.params.topic_id }, function (err, topic) {

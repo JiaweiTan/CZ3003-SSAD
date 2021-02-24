@@ -1,6 +1,23 @@
 const { Quiz } = require("../models/quiz");
 const { Topic } = require("../models/topic");
 
+exports.GetQuizList = (req, res, next) => {
+  try {
+    Quiz.find({}, function (err, quiz) {
+      if (err) {
+        err.status = 400;
+        next(err);
+      } else {
+        res.json(quiz);
+      }
+    })
+  }
+  catch (e) {
+    console.log(e);
+    return res.status(500).json(e).end();
+  }
+}
+
 exports.GetAllQuiz = async (req, res) => {
   try {
     var sortBy = req.query?.sortBy || "default";
