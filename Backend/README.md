@@ -28,6 +28,12 @@ To run the backend application
 npm run dev
 ```
 
+To open the swagger UI for endpoint testing
+
+```
+http://{hostname}:{port}/api-docs
+```
+
 ### Environment variables
 
 .env shall contain every credential used using testing/production

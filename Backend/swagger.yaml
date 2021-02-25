@@ -1,0 +1,894 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local dev server
+paths:
+  '/user/{user_id}':
+    get:
+      summary: 'Get a user entity'
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'A user entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: ["User"]
+    put:
+      summary: 'Update a user'
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses: 
+        '200':
+          description: 'A user entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: ["User"]
+    delete:
+      summary: 'Delete a user'
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'Empty'
+          content:
+            application/json:
+              schema: {}
+      tags: ["User"]
+  '/user':
+    get:
+      summary: 'List all users'
+      responses: 
+        '200':
+          description: 'A list of user entities'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  count:
+                    type: integer
+      tags: ["User"]
+  '/user/register':
+    post:
+      summary: 'Register a user'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+      responses: 
+        '200':
+          description: 'A user entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: ["User"]
+  '/user/login':
+    post:
+      summary: 'Login user'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses: 
+        '200':
+          description: 'A user entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: ["User"]
+  '/user/{user_id}/progress':
+    get:
+      summary: 'Get the list of completed quiz ids by a user'
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'A list of completed quiz ids'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      tags: ["Progress"]
+    post:
+      summary: 'Update the progress when user completed a quiz'
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz_id:
+                  type: string
+      responses: 
+        '200':
+          description: 'A list of completed quiz ids'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      tags: ["Progress"]
+  '/user/password/reset':
+    post:
+      summary: 'Reset password'
+      responses: 
+        '200':
+          description: 'Empty'
+          content:
+            application/json:
+              schema: {}
+      tags: ["User"]
+  '/user/password/forget':
+    post:
+      summary: 'Forget password'
+      responses: 
+        '200':
+          description: 'Empty'
+          content:
+            application/json:
+              schema: {}
+      tags: ["User"]
+  '/course_all':
+    get:
+      summary: 'Get all course entities'
+      responses: 
+        '200':
+          description: 'A list of course entities'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  courses:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Course'
+                  count:
+                    type: integer
+      tags: ['Course']
+  '/course/{course_id}':
+    get:
+      summary: 'Get a course entity'
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'A course entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      tags: ["Course"]
+    put:
+      summary: 'Update a course'
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses: 
+        '200':
+          description: 'A course entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      tags: ["Course"]
+    delete:
+      summary: 'Delete a course'
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'Empty'
+          content:
+            application/json:
+              schema: {}
+      tags: ["Course"]
+  '/course_user/{user_id}':
+    get:
+      summary: 'Get all course ids registered by a user'
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'A list of course ids'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                 type: string
+      tags: ["Course"]
+  '/course':
+    post:
+      summary: 'Create a course'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course_name:
+                  type: string
+                course_desc:
+                  type: string
+      responses: 
+        '200':
+          description: 'A course entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      tags: ["Course"]
+  '/topic/{topic_id}':
+    get:
+      summary: 'Get a topic entity'
+      parameters:
+        - name: topic_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'A topic entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+      tags: ["Topic"]
+    put:
+      summary: 'Update a topic'
+      parameters:
+        - name: topic_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Topic'
+      responses: 
+        '200':
+          description: 'A topic entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+      tags: ["Topic"]
+    delete:
+      summary: 'Delete a topic'
+      parameters:
+        - name: topic_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'Empty'
+          content:
+            application/json:
+              schema: {}
+      tags: ['Topic']
+  '/topic':
+    post:
+      summary: 'Create a topic'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course_id:
+                  type: string
+                topic_name:
+                  type: string
+                topic_desc:
+                  type: string
+      responses: 
+        '200':
+          description: 'A topic entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+      tags: ["Topic"]
+  '/topic/quizzes/{topic_id}':
+    get:
+      summary: 'Get quiz entities by topic'
+      parameters:
+        - name: topic_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'A list of quiz entities'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quizzes:
+                    $ref: '#/components/schemas/Quiz'
+                  count:
+                    type: integer
+      tags: ["Topic"]
+  '/quiz':
+    get:
+      summary: 'Get all quiz entities'
+      responses: 
+        '200':
+          description: 'A quiz entity'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quizzes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Quiz'
+                  count:
+                    type: integer
+      tags: ["Quiz"]
+    post:
+      summary: 'Create a quiz'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                topic_id:
+                  type: string
+                quiz_name:
+                  type: string
+                quiz_desc:
+                  type: string
+                created_by:
+                  type: string
+      responses: 
+        '200':
+          description: 'A quiz entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+      tags: ["Quiz"]
+  '/quiz/{quiz_id}':
+    put:
+      summary: 'Update a quiz'
+      parameters:
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quiz'
+      responses: 
+        '200':
+          description: 'A quiz entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+      tags: ['Quiz']
+    delete:
+      summary: 'Delete a quiz'
+      parameters:
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'Empty'
+          content:
+            application/json:
+              schema: {}
+      tags: ['Quiz']
+  '/question':
+    get:
+      summary: 'Get all question entities'
+      responses: 
+        '200':
+          description: 'A list question entities'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Question'
+                  count:
+                    type:
+                      integer
+      tags: ["Question"]
+    post:
+      summary: 'Create a question'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz_id:
+                  type: string
+                question_desc:
+                  type: string
+                difficulty:
+                  type: string
+                options:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      answer_desc:
+                        type: string
+                      is_correct:
+                        type: boolean
+      responses: 
+        '200':
+          description: 'A question entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+      tags: ["Question"]
+  '/question/{question_id}':
+    get:
+      summary: 'Get a question entity'
+      parameters:
+        - name: question_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'A question entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+      tags: ['Question']
+    put:
+      summary: 'Update a question'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Question'
+      parameters:
+        - name: question_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'A question entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+      tags: ["Question"]
+    delete:
+      summary: 'Delete a question'
+      parameters:
+        - name: question_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'Empty'
+          content:
+            application/json:
+              schema: {}
+      tags: ["Question"]
+  '/question/attempt':
+    post:
+      summary: 'Create an attempt'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                quiz_id:
+                  type: string
+                option_id:
+                  type: string
+      responses: 
+        '200':
+          description: 'A question entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attempt'
+      tags: ["Attempt"]
+  '/achievement/{achievement_id}':
+    get:
+      summary: 'Get an achievement entity'
+      parameters:
+        - name: achievement_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'An achievement entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+      tags: ["Achievement"]
+    put:
+      summary: 'Update an achievement'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Achievement'
+      parameters:
+        - name: achievement_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'An achievement entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+      tags: ['Achievement']
+    delete:
+      summary: 'Delete an achievement'
+      parameters:
+        - name: achievement_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'Empty'
+          content:
+            application/json:
+              schema: {}
+      tags: ['Achievement']
+  '/achievement':
+    post:
+      summary: 'Create an achievement'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                achievement_desc:
+                  type: string
+      responses: 
+        '200':
+          description: 'An achievement entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+      tags: ['Achievement']
+  '/achievement/user/{user_id}':
+    get:
+      summary: 'Get the list of user achievement'
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: 'A list of user achievement entities'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  achievements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Achievement'
+                  count:
+                    type: integer
+      tags: ["User"]
+  '/leaderboard':
+    get:
+      summary: 'Get the leaderboard'
+      responses: 
+        '200':
+          description: 'A list of user entities'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  count:
+                    type: integer
+      tags: ['Leaderboard']
+  '/list/course':
+    get:
+      summary: 'Get all course entities'
+      responses: 
+        '200':
+          description: 'A list of course entities'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+      tags: ['Course']
+  '/list/question':
+    get:
+      summary: 'Get all question entities'
+      responses: 
+        '200':
+          description: 'A list of question entities'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+      tags: ['Question']
+  '/list/quiz':
+    get:
+      summary: 'Get all quiz entities'
+      responses: 
+        '200':
+          description: 'A list of quiz entities'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quiz'
+      tags: ["Quiz"]
+  '/list/topic':
+    get:
+      summary: 'Get all topic entities'
+      responses: 
+        '200':
+          description: 'A list of topic entity'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Topic'
+      tags: ["Topic"]
+tags: []
+info:
+  title: backend
+  version: 1.0.0
+  license:
+    name: ISC
+  description: 'Specification JSONs: [v2](/api-spec/v2), [v3](/api-spec/v3).'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        head_color:
+          type: integer
+        leg_color:
+          type: integer
+        body_color:
+          type: integer
+        email:
+          type: string
+        role:
+          type: string
+        courses:
+          type: array
+          items: 
+            type: string
+        completed_quiz:
+          type: array
+          items: 
+            type: string
+        achievement:
+          type: array
+          items: 
+            type: string
+    Course:
+      type: object
+      properties:
+        _id:
+          type: string
+        course_name:
+          type: string
+        course_desc:
+          type: string
+        topic_list:
+          type: array
+          items: 
+            type: string
+    Topic:
+      type: object
+      properties:
+        _id:
+          type: string
+        topic_name:
+          type: string
+        topic_desc:
+          type: string
+        quiz_list:
+          type: array
+          items: 
+            type: string
+    Quiz:
+      type: object
+      properties:
+        _id:
+          type: string
+        quiz_name:
+          type: string
+        quiz_desc:
+          type: string
+        question_list:
+          type: array
+          items: 
+            type: string
+        created_by:
+          type: string
+    Question:
+      type: object
+      properties:
+        _id:
+          type: string
+        questions_desc:
+          type: string
+        difficulty:
+          type: string
+        option:
+          type: array
+          items:
+            type: object
+            properties:
+              _id: 
+                type: string
+              answer_desc:
+                type: string
+              is_correct:
+                type: boolean
+    Attempt:
+      type: object
+      properties:
+        _id:
+          type: string
+        user_id:
+          type: string
+        question_id:
+          type: string
+        option_id:
+          type: string
+    Achievement:
+      type: object
+      properties:
+        _id:
+          type: string
+        achievement_desc:
+          type: string
+            

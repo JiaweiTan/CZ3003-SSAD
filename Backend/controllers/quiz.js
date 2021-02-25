@@ -33,13 +33,13 @@ exports.GetAllQuiz = async (req, res) => {
       sortBy: sortBy,
       sortDesc: sortDesc,
     };
-    var quiz = await Quiz.find()
+    var quizzes = await Quiz.find()
       .skip((paginationInfo.page - 1) * paginationInfo.itemsPerPage)
       .limit(paginationInfo.itemsPerPage)
       .sort(paginationInfo.sortBy)
       .exec();
     var count = await Quiz.find().countDocuments({});
-    var quizData = { quiz, count };
+    var quizData = { quizzes, count };
     return res.status(200).json(quizData);
   } catch (e) {
     console.log(e);

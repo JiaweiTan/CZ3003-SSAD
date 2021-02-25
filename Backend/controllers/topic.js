@@ -89,20 +89,19 @@ exports.DeleteTopic = async (req, res) => {
 
 exports.GetTopicQuiz = async (req, res, next) => {
   try {
-    Topic.findOne({ _id: req.params.topic_id }, async function (err, topic) {
+    Topic.findOne({ _id: req.params?.topic_id }, async function (err, topic) {
       if (err) {
         err.status = 400;
         next(err);
       } else {
-        var quizIdStr = topic.quiz_list;
-        var quizIdList = quizIdStr.split(",");
-        var topicQuizData = await Quiz.find({
+        var quizIdList = topic.quiz_list;
+        var quizzes = await Quiz.find({
           _id: { $in: quizIdList },
         });
         var count = await Quiz.find({
           _id: { $in: quizIdList },
         }).countDocuments({});
-        res.json({ topicQuizData, count });
+        res.json({ quizzes, count });
       }
     });
   } catch (e) {

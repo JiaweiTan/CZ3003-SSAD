@@ -16,7 +16,7 @@ router.post("/user/login", userController.LoginUser);
 router.put("/user/:user_id", userController.UpdateUser);
 router.get("/user/:user_id/progress", userController.GetAllUserProgress);
 router.post("/user/:user_id/progress", userController.CreateUserProgress);
-router.post("/user/achievement", userController.CreateUserAchievement);
+// router.post("/user/achievement", userController.CreateUserAchievement);
 router.delete("/user/:user_id", userController.DeleteUser);
 router.post("/user/password/reset", userController.ForgetPassword);
 router.post("/user/password/forget", userController.ForgetPasswordEmail);
@@ -32,7 +32,7 @@ router.get("/topic/:topic_id", topicController.GetTopic);
 router.post("/topic", topicController.CreateTopic);
 router.put("/topic/:topic_id", topicController.UpdateTopic);
 router.delete("/topic/:topic_id", topicController.DeleteTopic);
-router.get("/topic/quizzes", topicController.GetTopicQuiz);
+router.get("/topic/quizzes/:topic_id", topicController.GetTopicQuiz);
 
 router.get("/quiz", quizController.GetAllQuiz);
 router.post("/quiz", quizController.CreateQuiz);

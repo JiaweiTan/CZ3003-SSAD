@@ -66,9 +66,12 @@ exports.GetUserAchievement = async (req, res, next) => {
         err.status = 400;
         next(err);
       } else {
-        var userAchievements = user.achievement;
-        var count = userAchievements?.length;
-        return res.status(500).json({ userAchievements, count });
+        var userAchievementIds = user.achievement;
+        var achievements = await Achievement.find({
+          _id: { $in: userAchievementIds },
+        });
+        var count = userAchievementIds?.length;
+        return res.status(500).json({ achievements, count });
       }
     });
   } catch (e) {
