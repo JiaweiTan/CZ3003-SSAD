@@ -43,6 +43,7 @@ Note: When testing, please include in your own credentials.
 ```
 DB_USERNAME={database_username}
 DB_PASSWORD={database_password}
+DB_HOSTNAME={database_url}
 BASE_URL=DEPLOYED FRONTEND URL
 SENDGRID_API_KEY=SENDGRID_KEY
 ```

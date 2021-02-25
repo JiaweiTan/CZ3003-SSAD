@@ -607,6 +607,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/Attempt'
       tags: ["Attempt"]
+  '/achievement_all':
+    get:
+      summary: 'Get all achievement entities'
+      responses: 
+        '200':
+          description: 'A list achievement entities'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  achievements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Achievement'
+                  count:
+                    type: integer
   '/achievement/{achievement_id}':
     get:
       summary: 'Get an achievement entity'
