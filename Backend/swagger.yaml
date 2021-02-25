@@ -624,6 +624,7 @@ paths:
                       $ref: '#/components/schemas/Achievement'
                   count:
                     type: integer
+      tags: ["Achievement"]
   '/achievement/{achievement_id}':
     get:
       summary: 'Get an achievement entity'
