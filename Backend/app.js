@@ -8,7 +8,9 @@ const db_user = process.env.DB_USERNAME;
 const db_password = process.env.DB_PASSWORD;
 const db_server = process.env.DB_HOSTNAME;
 const db_conn = `mongodb+srv://${db_user}:${db_password}@${db_server}/backend`
+var cors = require('cors');
 
+app.use(cors());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // imports routes for the events
