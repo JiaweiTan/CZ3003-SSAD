@@ -2,6 +2,35 @@ const { Quiz } = require("../models/quiz");
 const { Topic } = require("../models/topic");
 const { Course } = require("../models/course");
 
+exports.GetAllTopic = async (req, res) => {
+  try {
+    var sortBy = req.query?.sortBy || "default";
+    sortBy = sortBy == "default" ? "topic_name" : sortBy[0];
+    var sortDesc = req.query?.sortDesc || "default";
+    sortDesc = sortDesc == "default" ? "" : sortDesc[0];
+    sortDesc === "true"
+      ? (sortBy = { [sortBy]: -1 })
+      : (sortBy = { [sortBy]: 1 });
+    var paginationInfo = {
+      page: req.query.page,
+      itemsPerPage: req.query?.itemsPerPage - 0,
+      sortBy: sortBy,
+      sortDesc: sortDesc,
+    };
+    var topics = await Topic.find()
+      .skip((paginationInfo.page - 1) * paginationInfo.itemsPerPage)
+      .limit(paginationInfo.itemsPerPage)
+      .sort(paginationInfo.sortBy)
+      .exec();
+    var count = await Topic.find().countDocuments({});
+    var topicData = { topics, count };
+    return res.status(200).json(topicData);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json(e).end();
+  }
+};
+
 exports.GetTopicList = (req, res, next) => {
   try {
     Topic.find({}, function (err, topic) {

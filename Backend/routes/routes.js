@@ -29,6 +29,7 @@ router.put("/course/:course_id", courseController.UpdateCourse);
 router.delete("/course/:course_id", courseController.DeleteCourse);
 
 router.get("/topic/:topic_id", topicController.GetTopic);
+router.get("/topic_all", topicController.GetAllTopic);
 router.post("/topic", topicController.CreateTopic);
 router.put("/topic/:topic_id", topicController.UpdateTopic);
 router.delete("/topic/:topic_id", topicController.DeleteTopic);
