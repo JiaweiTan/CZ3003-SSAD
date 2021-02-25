@@ -4,6 +4,9 @@ const app = express();
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
+const db_user = process.env.DB_USERNAME;
+const db_password = process.env.DB_PASSWORD;
+const db_conn = `mongodb+srv://${db_user}:${db_password}@cluster0.uokhf.mongodb.net/backend`
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -15,8 +18,9 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set("useUnifiedTopology", true);
 mongoose.set('useFindAndModify', false);
 
+console.log(db_conn)
 mongoose
-  .connect("mongodb://localhost/backend")
+  .connect(db_conn)
   .then(() => console.log("Now connected to MongoDB!"))
   .catch((err) => console.error("Something went wrong", err));
 

@@ -2,6 +2,8 @@ openapi: 3.0.0
 servers:
   - url: http://localhost:5000/api/v1
     description: Local dev server
+  - url: http://afternoon-stream-53755.herokuapp.com/api/v1
+    description: Heroku server
 paths:
   '/user/{user_id}':
     get:
