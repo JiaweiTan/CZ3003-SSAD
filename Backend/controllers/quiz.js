@@ -67,7 +67,7 @@ exports.CreateQuiz = async (req, res, next) => {
 
 exports.UpdateQuiz = async (req, res) => {
   try {
-    var updatedQuiz = req.body?.quiz;
+    var updatedQuiz = req.body;
     var quizData = await Quiz.findByIdAndUpdate(
       updatedQuiz._id,
       {
