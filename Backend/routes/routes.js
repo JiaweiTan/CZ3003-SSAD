@@ -47,6 +47,8 @@ router.delete("/question/:question_id", questionController.DeleteQuestion);
 
 router.post("/question/attempt", attemptController.CreateAttempt);
 
+
+router.get("/achievement_all", achievementController.GetAllAchievement);
 router.get(
   "/achievement/:achievement_id",
   achievementController.GetAchievement
