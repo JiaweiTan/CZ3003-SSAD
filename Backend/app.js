@@ -7,7 +7,8 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 const db_user = process.env.DB_USERNAME;
 const db_password = process.env.DB_PASSWORD;
 const db_server = process.env.DB_HOSTNAME;
-const db_conn = `mongodb+srv://${db_user}:${db_password}@${db_server}/backend`
+const db_conn = "mongodb://localhost/backend"
+// `mongodb+srv://${db_user}:${db_password}@${db_server}/backend`
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
